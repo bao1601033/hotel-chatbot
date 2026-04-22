@@ -31,7 +31,7 @@ AWS_REGION        = os.getenv("AWS_REGION", "ap-southeast-1")
 ATHENA_DB         = os.getenv("ATHENA_DB", "hotel_data")
 ATHENA_OUTPUT     = os.getenv("ATHENA_OUTPUT", "s3://booking-athena-results-yourname/")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-MODEL             = "claude-sonnet-4-20250514"
+MODEL             = "claude-3-5-sonnet-20241022"
 
 # ── Clients ───────────────────────────────────────────────────────────────────
 athena_client  = boto3.client("athena", region_name=AWS_REGION)
