@@ -148,7 +148,7 @@ Cities available: Ho Chi Minh City, Ha Noi, Da Nang, Hoi An, Nha Trang, Phu Quoc
 Price tiers: budget (<500k VND), mid-range (500k-2M), premium (2M-5M), luxury (>5M)
 
 IMPORTANT RULES:
-1. Always use the LATEST data: add WHERE p.scrape_date = (SELECT MAX(scrape_date) FROM fact_pricing) for fact tables
+1. Do NOT filter by a single scrape_date globally. To get latest data per hotel use: JOIN (SELECT hotel_id, MAX(scrape_date) as max_date FROM fact_pricing GROUP BY hotel_id) latest_p ON p.hotel_id = latest_p.hotel_id AND p.scrape_date = latest_p.max_date
 2. Always JOIN dim_hotel h, dim_location l, fact_pricing p, fact_review r ON hotel_id
 3. Limit results to 6-10 hotels unless user asks for more
 4. For availability filter: WHERE p.availability_status = 'available'
