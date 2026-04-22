@@ -223,6 +223,8 @@ async def chat(req: ChatRequest):
     if needs_hotels and sql:
         try:
             rows   = run_athena_query(sql)
+        seen = set()
+        rows = [r for r in rows if r.get("hotel_id") not in seen and not seen.add(r.get("hotel_id"))]
             hotels = rows_to_hotels(rows)
         except Exception as e:
             text += f"\n\n_(Lỗi truy vấn dữ liệu: {str(e)})_"
