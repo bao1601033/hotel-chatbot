@@ -31,7 +31,7 @@ AWS_REGION        = os.getenv("AWS_REGION", "ap-southeast-1")
 ATHENA_DB         = os.getenv("ATHENA_DB", "hotel_data")
 ATHENA_OUTPUT     = os.getenv("ATHENA_OUTPUT", "s3://booking-athena-results-yourname/")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-MODEL             = "claude-sonnet-4-5"
+MODEL             = "claude-sonnet-4-20250514"
 
 # ── Clients ───────────────────────────────────────────────────────────────────
 athena_client  = boto3.client("athena", region_name=AWS_REGION)
@@ -152,6 +152,10 @@ IMPORTANT RULES:
 2. Always JOIN dim_hotel h, dim_location l, fact_pricing p, fact_review r ON hotel_id
 3. Limit results to 6-10 hotels unless user asks for more
 4. For availability filter: WHERE p.availability_status = 'available'
+5. NEVER filter by price_tier directly — it often returns 0 results. Instead use ORDER BY p.price_per_night_vnd ASC for budget queries, DESC for luxury queries
+6. For "budget" or "gia re" queries: order by price ASC, limit 8
+7. For "luxury" or "cao cap" queries: order by price DESC, limit 8
+8. Always include city in the result for context
 
 You MUST respond in JSON format ONLY:
 {
